@@ -1,19 +1,51 @@
-const getTotalIsles = require('./program1');
-const assert = require("assert");
+function numIslands(grid) {
+    if (!grid || grid.length === 0) return 0;
+    const rows = grid.length;
+    const cols = grid[0].length;
+    function dfs(r, c) {
+        if (r < 0 || c < 0 || r >= rows || c >= cols || grid[r][c] === 'W') return;
+        
+     
+        grid[r][c] = 'W';
+
+     
+        dfs(r - 1, c); // up
+        dfs(r + 1, c); // down
+        dfs(r, c - 1); // left
+        dfs(r, c + 1); // right
+    }
+
+    let islandCount = 0; // To store the number of distinct islands
+
+ 
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          
+            if (grid[r][c] === '1') {
+                islandCount++;
+                dfs(r, c); // Mark the entire island as visited
+            }
+        }
+    }
+
+    return islandCount;
+}
 
 
-describe("Test cases for finding total number of Islands", function () {
+let map1 = [
+  ['W', 'W', 'W', 'W', '1', 'W', 'W', 'W'],
+  ['W', '1', '1', 'W', '1', '1', 'W', 'W'],
+  ['W', 'W', 'W', 'W', '1', 'W', '1', '1'],
+  ['1', '1', '1', 'W', 'W', 'W', 'W', 'W'],
+];
 
-    it(`Returns 1 for [["L","L","L","L","W"],["L","L","W","L","W"],["L","L","W","W","W"],["W","W","W","W","W"]]`, function () {
-        const result = getTotalIsles([["L","L","L","L","W"],["L","L","W","L","W"],["L","L","W","W","W"],["W","W","W","W","W"]]);
-        assert.equal(result, 1);
-    });
-    it(`Returns 3 for [["L","L","W","W","W"],["L","L","W","W","W"],["W","W","L","W","W"],["W","W","W","L","L"]]`, function () {
-        const result = getTotalIsles([["L","L","W","W","W"],["L","L","W","W","W"],["W","W","L","W","W"],["W","W","W","L","L"]]);
-        assert.equal(result, 3);
-    });
-    it(`Returns 1 for [["W", "W", "W", "W"], ["W", "L", "L", "W"], ["W", "L", "L", "W"], ["W", "W", "W", "W"]]`, function () {
-        const result = getTotalIsles([["W", "W", "W", "W"], ["W", "L", "L", "W"], ["W", "L", "L", "W"], ["W", "W", "W", "W"]]);
-        assert.equal(result, 1);
-    });
-});
+console.log(numIslands(map1)); 
+
+let map2 = [
+  ['1', 'W', '1', 'W', 'W', 'W', 'W', '1'],
+  ['1', '1', 'W', 'W', 'W', '1', 'W', '1'],
+  ['W', 'W', '1', '1', '1', '1', 'W', 'W'],
+  ['W', 'W', 'W', 'W', 'W', 'W', 'W', '1'],
+];
+
+console.log(numIslands(map2));
